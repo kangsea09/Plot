@@ -14,8 +14,9 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 48px;
+  padding: 20px 48px;
   background-color: ${Plot_colors.gray[97]};
+  border-bottom: 1px solid #e9e4df;
 
   button {
     background-color: white;
