@@ -1,11 +1,17 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
 import Remove from "../assets/Remove.svg";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const menuItems = ["HOME", "수입/지출 내역", "랭킹", "AI 미래 활동 가이드"];
+const menuItems = [
+  { label: "HOME", path: "/" },
+  { label: "수입/지출 내역", path: "/history" },
+  { label: "랭킹", path: "/ranking" },
+  { label: "AI 미래 활동 가이드", path: "/ai-guide" },
+];
 
 const Sidebar = () => {
-  const [activeMenu, setActiveMenu] = useState("HOME");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Container>
@@ -13,11 +19,11 @@ const Sidebar = () => {
       <MenuContainer>
         {menuItems.map((item) => (
           <MenuButton
-            key={item}
-            isActive={activeMenu === item}
-            onClick={() => setActiveMenu(item)}
+            key={item.label}
+            isActive={location.pathname === item.path}
+            onClick={() => navigate(item.path)}
           >
-            {item}
+            {item.label}
           </MenuButton>
         ))}
       </MenuContainer>
@@ -41,6 +47,11 @@ const Container = styled.div`
   span {
     font-size: 14px;
     font-weight: bold;
+  }
+
+  h2 {
+    font-weight: bold;
+    font-size: large;
   }
 `;
 
