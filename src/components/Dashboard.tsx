@@ -67,7 +67,7 @@ const StatCard = ({ label, value, percent, positive }: StatCardProps) => (
 );
 
 const Dashboard = () => (
-  <Box style={{ background: "#f9fafb", minHeight: "100%" }} p={6}>
+  <Box>
     <Grid templateColumns="repeat(4, 1fr)" gap={3} mb={4}>
       <StatCard label="수입" value="3,420,000원" percent="91% 여유" positive />
       <StatCard label="지출" value="294,300원" percent="9% 사용" />
