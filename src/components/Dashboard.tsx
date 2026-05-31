@@ -13,8 +13,6 @@ import {
 interface StatCardProps {
   label: string;
   value: string;
-  percent: string;
-  positive?: boolean;
 }
 
 const barData = [
@@ -41,7 +39,7 @@ const BAR_COLORS = [
 ];
 const DONUT_COLORS = ["#1D9E75", "#7F77DD"];
 
-const StatCard = ({ label, value, percent, positive }: StatCardProps) => (
+const StatCard = ({ label, value }: StatCardProps) => (
   <Box
     style={{
       background: "white",
@@ -56,28 +54,16 @@ const StatCard = ({ label, value, percent, positive }: StatCardProps) => (
     <Text fontSize="2xl" fontWeight="600">
       {value}
     </Text>
-    <Text
-      fontSize="sm"
-      fontWeight="500"
-      style={{ color: positive ? "#1D9E75" : "#7F77DD" }}
-    >
-      {percent}
-    </Text>
   </Box>
 );
 
 const Dashboard = () => (
   <Box>
     <Grid templateColumns="repeat(4, 1fr)" gap={3} mb={4}>
-      <StatCard label="수입" value="3,420,000원" percent="91% 여유" positive />
-      <StatCard label="지출" value="294,300원" percent="9% 사용" />
-      <StatCard
-        label="3개월 전 수입"
-        value="2,900,000원"
-        percent="+3%"
-        positive
-      />
-      <StatCard label="3개월 전 지출" value="630,000원" percent="-52%" />
+      <StatCard label="수입" value="3,420,000원" />
+      <StatCard label="지출" value="294,300원" />
+      <StatCard label="3개월 전 수입" value="2,900,000원" />
+      <StatCard label="3개월 전 지출" value="630,000원" />
     </Grid>
 
     <Grid templateColumns="3fr 2fr" gap={3}>

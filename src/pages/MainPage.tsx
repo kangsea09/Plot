@@ -13,7 +13,6 @@ const MainPage = () => (
 );
 
 const Container = styled.div`
-  min-height: 100%;
   background: #f5f3ee;
   padding: 40px 32px;
 `;

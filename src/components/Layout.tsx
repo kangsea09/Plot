@@ -28,6 +28,7 @@ const Content = styled.div`
 const Main = styled.main`
   flex: 1;
   overflow-y: auto;
+  background: #f5f3ee;
 `;
 
 export default Layout;
