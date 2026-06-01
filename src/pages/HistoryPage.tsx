@@ -89,7 +89,7 @@ const HistoryPage = () => {
           </Panel>
 
           {/* 내역 목록 */}
-          <Panel>
+          <ListPanel>
             {filtered.length === 0 ? (
               <Empty>내역이 없습니다.</Empty>
             ) : (
@@ -125,7 +125,7 @@ const HistoryPage = () => {
                 );
               })
             )}
-          </Panel>
+          </ListPanel>
         </Wrap>
 
         {viewModal && (
@@ -151,23 +151,32 @@ const Container = styled.div`
   background: #f5f3ee;
   padding: 40px 32px;
 `;
+
 const Wrap = styled.div`
   display: flex;
   gap: 24px;
   align-items: flex-start;
 `;
+
 const Panel = styled.div`
   background: #fff;
   border-radius: 24px;
-  padding: 28px;
+  padding: 20px;
   border: 1px solid #e8e6e0;
   flex: 1;
 `;
-const Title = styled.h2`
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 24px;
+
+const ListPanel = styled(Panel)`
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
 `;
+
+const Title = styled.h2`
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 16px;
+`;
+
 const TabRow = styled.div`
   display: flex;
   background: #f5f3ee;
@@ -175,6 +184,7 @@ const TabRow = styled.div`
   padding: 4px;
   margin-bottom: 20px;
 `;
+
 const TabBtn = styled.button<{ active: boolean }>`
   flex: 1;
   padding: 10px 0;

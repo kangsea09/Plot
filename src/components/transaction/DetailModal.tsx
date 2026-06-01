@@ -66,6 +66,8 @@ const Box = styled.div`
   border-radius: 20px;
   padding: 2rem;
   min-width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
 `;
 const Header = styled.div`
