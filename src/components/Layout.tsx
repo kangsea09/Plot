@@ -20,11 +20,13 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const Content = styled.div`
   display: flex;
   flex: 1;
   overflow: hidden;
 `;
+
 const Main = styled.main`
   flex: 1;
   overflow-y: auto;

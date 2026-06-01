@@ -196,11 +196,13 @@ const TabBtn = styled.button<{ active: boolean }>`
   font-size: 14px;
   cursor: pointer;
 `;
+
 const Col = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
+
 const field = `
   width: 100%;
   padding: 12px 16px;
@@ -212,17 +214,21 @@ const field = `
   outline: none;
   box-sizing: border-box;
 `;
+
 const Input = styled.input`
   ${field}
 `;
+
 const Select = styled.select`
   ${field}
 `;
+
 const Textarea = styled.textarea`
   ${field}
   height: 90px;
   resize: none;
 `;
+
 const AddBtn = styled.button`
   background: #1a1a1a;
   color: #fff;
@@ -234,26 +240,31 @@ const AddBtn = styled.button`
   cursor: pointer;
   width: 100%;
 `;
+
 const Item = styled.div`
   padding: 18px 0;
   border-bottom: 1px solid #f0ede6;
 `;
+
 const ItemTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
 `;
+
 const ItemBottom = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
 `;
+
 const Amount = styled.span<{ positive: boolean }>`
   font-weight: 700;
   font-size: 15px;
   color: ${({ positive }) => (positive ? "#2E7D32" : "#C62828")};
 `;
+
 const Badge = styled.span<{ bg: string; color: string }>`
   background: ${({ bg }) => bg};
   color: ${({ color }) => color};
@@ -262,19 +273,23 @@ const Badge = styled.span<{ bg: string; color: string }>`
   font-size: 12px;
   font-weight: 600;
 `;
+
 const Date = styled.span`
   font-size: 13px;
   color: #999;
 `;
+
 const Memo = styled.span`
   font-size: 12px;
   color: #bbb;
 `;
+
 const BtnGroup = styled.div`
   display: flex;
   gap: 8px;
   margin-top: 10px;
 `;
+
 const Empty = styled.div`
   text-align: center;
   color: #bbb;

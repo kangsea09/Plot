@@ -61,6 +61,7 @@ const Overlay = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Box = styled.div`
   background: #fff;
   border-radius: 20px;
@@ -70,16 +71,19 @@ const Box = styled.div`
   overflow-y: auto;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
 `;
+
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 `;
+
 const Title = styled.span`
   font-size: 18px;
   font-weight: 700;
 `;
+
 const CloseBtn = styled.button`
   background: none;
   border: none;
@@ -87,6 +91,7 @@ const CloseBtn = styled.button`
   cursor: pointer;
   color: #999;
 `;
+
 const Col = styled.div`
   display: flex;
   flex-direction: column;
@@ -94,13 +99,16 @@ const Col = styled.div`
   font-size: 14px;
   color: #555;
 `;
+
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const Label = styled.span`
   color: #999;
 `;
+
 const Badge = styled.span<{ bg: string; color: string }>`
   background: ${({ bg }) => bg};
   color: ${({ color }) => color};
@@ -109,6 +117,7 @@ const Badge = styled.span<{ bg: string; color: string }>`
   font-size: 12px;
   font-weight: 600;
 `;
+
 const Amount = styled.span<{ positive: boolean }>`
   font-weight: 700;
   font-size: 16px;

@@ -94,6 +94,7 @@ const Overlay = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Box = styled.div`
   background: #fff;
   border-radius: 20px;
@@ -101,16 +102,19 @@ const Box = styled.div`
   min-width: 340px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
 `;
+
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 `;
+
 const Title = styled.span`
   font-size: 18px;
   font-weight: 700;
 `;
+
 const CloseBtn = styled.button`
   background: none;
   border: none;
@@ -118,22 +122,27 @@ const CloseBtn = styled.button`
   cursor: pointer;
   color: #999;
 `;
+
 const Col = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
+
 const Input = styled.input`
   ${field}
 `;
+
 const Select = styled.select`
   ${field}
 `;
+
 const Textarea = styled.textarea`
   ${field}
   height: 80px;
   resize: none;
 `;
+
 const SaveBtn = styled.button`
   background: #1a1a1a;
   color: #fff;
