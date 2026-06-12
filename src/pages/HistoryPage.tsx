@@ -34,7 +34,7 @@ const HistoryPage = () => {
         <PageHeader
           label="LEDGER"
           title="수입/지출 내역 관리"
-          desc="추가, 수정, 삭제를 한 화면에서 관리합니다."
+          desc="이번 달 예산, 잘 지켜내고 있을까요? 카테고리별 수입과 지출 내역을 보여드릴게요"
         />
 
         <Wrap>
