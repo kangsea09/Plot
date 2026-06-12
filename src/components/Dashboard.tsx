@@ -16,12 +16,12 @@ interface StatCardProps {
 }
 
 const barData = [
-  { name: "전체", value: 8500 },
-  { name: "식비", value: 200 },
-  { name: "뷰티/미용", value: 7800 },
-  { name: "교통/차량", value: 4200 },
-  { name: "문화", value: 2100 },
-  { name: "쇼핑/여가", value: 6300 },
+  { name: "전체", value: 10000 },
+  { name: "식비", value: 4500 },
+  { name: "뷰티/미용", value:600 },
+  { name: "교통/차량", value: 3200 },
+  { name: "문화", value: 1500 },
+  { name: "쇼핑/여가", value: 200 },
 ];
 
 const donutData = [
