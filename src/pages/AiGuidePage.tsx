@@ -42,6 +42,12 @@ const INITIAL_EVENTS: FutureEvent[] = [
 const CATEGORIES = ["여행", "선물", "전자기기", "의료", "기타"];
 const PRIORITIES = ["보통", "낮음", "높음"];
 
+const PRIORITY_COLOR: Record<string, { bg: string; color: string }> = {
+  높음: { bg: "#FDECEA", color: "#C0392B" },
+  보통: { bg: "#FEF9E7", color: "#B7770D" },
+  낮음: { bg: "#E8F7F1", color: "#0F6E56" },
+};
+
 const AiGuidePage = () => {
   const [events, setEvents] = useState<FutureEvent[]>(INITIAL_EVENTS);
   const [form, setForm] = useState({
@@ -49,7 +55,7 @@ const AiGuidePage = () => {
     date: new Date().toISOString().slice(0, 10),
     category: "여행",
     amount: "",
-    priority: "보통",
+    priority: "",
   });
 
   // ── 수정 관련 state ──────────────────────────────────
@@ -158,6 +164,9 @@ const AiGuidePage = () => {
                 value={form.priority}
                 onChange={(e) => setForm({ ...form, priority: e.target.value })}
               >
+                <option value="" disabled>
+                  중요도 선택
+                </option>
                 {PRIORITIES.map((p) => (
                   <option key={p}>{p}</option>
                 ))}
@@ -218,11 +227,14 @@ const AiGuidePage = () => {
                         }
                       />
                       <EditSelect
-                        value={editForm.priority ?? "보통"}
+                        value={editForm.priority ?? ""}
                         onChange={(e) =>
                           setEditForm({ ...editForm, priority: e.target.value })
                         }
                       >
+                        <option value="" disabled>
+                          중요도 선택
+                        </option>
                         {PRIORITIES.map((p) => (
                           <option key={p}>{p}</option>
                         ))}
@@ -245,7 +257,13 @@ const AiGuidePage = () => {
                       </EventAmount>
                     </EventTop>
                     <EventMeta>
-                      {event.date} · {event.category} · 중요도 {event.priority}
+                      {event.date} · {event.category} ·{" "}
+                      <PriorityBadge
+                        bg={PRIORITY_COLOR[event.priority]?.bg ?? "#f0f0f0"}
+                        color={PRIORITY_COLOR[event.priority]?.color ?? "#888"}
+                      >
+                        {event.priority}
+                      </PriorityBadge>
                     </EventMeta>
                     <EventActions>
                       <IconButton
@@ -448,6 +466,19 @@ const EventMeta = styled.p`
   font-size: 12px;
   color: #888780;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const PriorityBadge = styled.span<{ bg: string; color: string }>`
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: ${({ bg }) => bg};
+  color: ${({ color }) => color};
 `;
 
 const EventActions = styled.div`
