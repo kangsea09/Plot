@@ -38,8 +38,13 @@ const AddForm = ({ tab, form, onTabChange, onFormChange, onAdd }: Props) => (
       />
       <Input
         type="number"
+        min="0"
+        inputMode="numeric"
         value={form.amount}
-        onChange={(e) => onFormChange({ amount: e.target.value })}
+        onChange={(e) => {
+          const sanitized = e.target.value.replace(/[^0-9]/g, "");
+          onFormChange({ amount: sanitized });
+        }}
         placeholder="금액"
       />
       <Select

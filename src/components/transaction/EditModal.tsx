@@ -22,7 +22,7 @@ const EditModal = ({ transaction, onClose, onSave }: Props) => {
   };
 
   const handleAmountChange = (value: string) => {
-    const num = Number(value);
+    const num = Number(value.replace(/[^0-9]/g, ""));
     set({ amount: form.type === "지출" ? -num : num });
   };
 
@@ -55,8 +55,13 @@ const EditModal = ({ transaction, onClose, onSave }: Props) => {
           </Select>
           <Input
             type="number"
+            min="0"
+            inputMode="numeric"
             value={Math.abs(form.amount)}
-            onChange={(e) => handleAmountChange(e.target.value)}
+            onChange={(e) => {
+              const sanitized = e.target.value.replace(/[^0-9]/g, "");
+              handleAmountChange(sanitized);
+            }}
             placeholder="금액"
           />
           <Input
