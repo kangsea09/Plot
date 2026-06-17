@@ -68,6 +68,8 @@ const useTransactions = () => {
   };
 
   const handleDelete = (id: number) => {
+    const ok = window.confirm("삭제하시겠습니까?");
+    if (!ok) return;
     setTransactions((prev) => prev.filter((t) => t.id !== id));
   };
 
