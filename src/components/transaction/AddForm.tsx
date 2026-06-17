@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import type { Category } from "../../types/transaction";
-import { CATEGORIES } from "../../data/transactions";
+import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "../../data/transactions";
 
 interface FormState {
   title: string;
@@ -46,7 +46,7 @@ const AddForm = ({ tab, form, onTabChange, onFormChange, onAdd }: Props) => (
         value={form.category}
         onChange={(e) => onFormChange({ category: e.target.value as Category })}
       >
-        {CATEGORIES.map((c) => (
+        {(tab === "수입" ? INCOME_CATEGORIES : EXPENSE_CATEGORIES).map((c) => (
           <option key={c} value={c}>
             {c}
           </option>

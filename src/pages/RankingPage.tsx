@@ -1,117 +1,142 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Layout from "../components/Layout";
+import BudgetSettingModal from "../components/BudgetSettingModal";
+import type { BudgetMap } from "../components/BudgetSettingModal";
+import type { Category } from "../types/transaction";
 import PageHeader from "../components/PageHeader";
 import styled from "@emotion/styled";
 
-// 카테고리 타입 정의
-type CategoryType =
-  | "전체"
-  | "뷰티/미용"
-  | "문화"
-  | "쇼핑/여가"
-  | "수입"
-  | "교통/차량"
-  | "식비"
-  | "기타";
+// --- 타입 정의 ---
 
-// 예산 소진율을 반영한 데이터 구조 인터페이스
+type BudgetCategory = Exclude<Category, "전체">;
+
 interface RankingItem {
   rank: number;
   userName: string;
-  amount: number; // 실제 지출 금액
-  budget: number; // 해당 카테고리에 설정한 개인 예산
-  usageRate: number; // 카테고리 예산 소진율 (%) -> (amount / budget) * 100
+  amount: number;
+  budget: number;
+  usageRate: number;
   isCurrentUser?: boolean;
 }
 
+// --- 상수 ---
+
+const CATEGORIES: Category[] = [
+  "전체",
+  "식비",
+  "쇼핑/여가",
+  "교통/차량",
+  "문화",
+  "뷰티/미용",
+  "수입",
+  "부수입",
+  "월급",
+  "용돈",
+  "기타",
+];
+
+const DEFAULT_BUDGETS: BudgetMap = {
+  식비: 300000,
+  "쇼핑/여가": 200000,
+  "교통/차량": 100000,
+  문화: 100000,
+  "뷰티/미용": 100000,
+  수입: 0,
+  부수입: 0,
+  월급: 0,
+  용돈: 0,
+  기타: 100000,
+};
+
+// amount와 budget을 받아 usageRate를 계산하는 헬퍼
+const calcRate = (amount: number, budget: number) =>
+  budget > 0 ? Math.round((amount / budget) * 100) : 0;
+
+const calcTotalBudget = (budgets: BudgetMap) =>
+  Object.values(budgets).reduce((total, value) => total + value, 0);
+
+// 더미 지출 데이터 (amount만 고정, budget/usageRate는 동적 계산)
+const RAW_SPENDING: Record<
+  Category,
+  { userName: string; amount: number; isCurrentUser?: boolean }[]
+> = {
+  전체: [
+    { userName: "김절약", amount: 240000 },
+    { userName: "이소비", amount: 450000 },
+    { userName: "강세아", amount: 420000, isCurrentUser: true },
+    { userName: "박가성비", amount: 550000 },
+  ],
+  식비: [
+    { userName: "밥도둑", amount: 150000 },
+    { userName: "강세아", amount: 180000, isCurrentUser: true },
+    { userName: "요리왕", amount: 350000 },
+    { userName: "프로외식러", amount: 1200000 },
+  ],
+  "뷰티/미용": [],
+  문화: [],
+  "쇼핑/여가": [],
+  수입: [],
+  부수입: [],
+  월급: [],
+  용돈: [],
+  "교통/차량": [],
+  기타: [],
+};
+
+// 전체 카테고리용 고정 예산 (개인 설정과 무관)
+const TOTAL_FIXED_BUDGETS: Record<string, number> = {
+  김절약: 600000,
+  이소비: 700000,
+  강세아: 500000,
+  박가성비: 500000,
+};
+
+// --- 컴포넌트 ---
+
 const RankingPage = () => {
-  const categories: CategoryType[] = [
-    "전체",
-    "식비",
-    "쇼핑/여가",
-    "교통/차량",
-    "문화",
-    "뷰티/미용",
-    "수입",
-    "기타",
-  ];
+  const [activeCategory, setActiveCategory] = useState<Category>("전체");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [budgets, setBudgets] = useState<BudgetMap>(DEFAULT_BUDGETS);
 
-  const [activeCategory, setActiveCategory] = useState<CategoryType>("전체");
+  const rankings = useMemo<Record<Category, RankingItem[]>>(() => {
+    const result = {} as Record<Category, RankingItem[]>;
 
-  // 예산 대비 소진율(usageRate) 기준 가상 데이터
-  // 소진율이 낮을수록 선방하고 있으므로 랭킹이 높습니다.
-  const dummyRankings: Record<CategoryType, RankingItem[]> = {
-    전체: [
-      {
-        rank: 1,
-        userName: "김절약",
-        amount: 240000,
-        budget: 600000,
-        usageRate: 40,
-      }, // 예산의 40%만 씀
-      {
-        rank: 2,
-        userName: "이소비",
-        amount: 450000,
-        budget: 700000,
-        usageRate: 64,
-      },
-      {
-        rank: 3,
-        userName: "강세아",
-        amount: 420000,
-        budget: 500000,
-        usageRate: 84,
-        isCurrentUser: true,
-      },
-      {
-        rank: 4,
-        userName: "박가성비",
-        amount: 550000,
-        budget: 500000,
-        usageRate: 110,
-      }, // 예산 초과!
-    ],
-    식비: [
-      {
-        rank: 1,
-        userName: "밥도둑",
-        amount: 150000,
-        budget: 450000,
-        usageRate: 33,
-      }, // 33% 소진
-      {
-        rank: 2,
-        userName: "강세아",
-        amount: 180000,
-        budget: 300000,
-        usageRate: 60,
-        isCurrentUser: true,
-      }, // 60% 소진 (소득 낮아도 예산 내에서 선방하면 상위권 가능)
-      {
-        rank: 3,
-        userName: "요리왕",
-        amount: 350000,
-        budget: 400000,
-        usageRate: 87.5,
-      },
-      {
-        rank: 4,
-        userName: "프로외식러",
-        amount: 1200000,
-        budget: 800000,
-        usageRate: 150,
-      }, // 예산 대폭 초과
-    ],
-    "뷰티/미용": [],
-    문화: [],
-    "쇼핑/여가": [],
-    수입: [],
-    "교통/차량": [],
-    기타: [],
-  };
+    for (const category of CATEGORIES) {
+      const raw = RAW_SPENDING[category];
 
-  const currentRankings = dummyRankings[activeCategory] || [];
+      if (category === "전체") {
+        const totalBudget = calcTotalBudget(budgets);
+        result[category] = raw
+          .map((item) => {
+            const budget = item.isCurrentUser
+              ? totalBudget
+              : (TOTAL_FIXED_BUDGETS[item.userName] ?? 0);
+            const usageRate = calcRate(item.amount, budget);
+            return { ...item, budget, usageRate };
+          })
+          .sort((a, b) => a.usageRate - b.usageRate)
+          .map((item, i) => ({ ...item, rank: i + 1 }));
+      } else {
+        result[category] = raw
+          .map((item) => {
+            const budget = item.isCurrentUser
+              ? (budgets[category as BudgetCategory] ?? 0)
+              : (DEFAULT_BUDGETS[category as BudgetCategory] ?? 0);
+            return {
+              ...item,
+              budget,
+              usageRate: calcRate(item.amount, budget),
+            };
+          })
+          .sort((a, b) => a.usageRate - b.usageRate)
+          .map((item, i) => ({ ...item, rank: i + 1 }));
+      }
+    }
+
+    return result;
+  }, [budgets]);
+
+  const currentRankings = rankings[activeCategory];
 
   return (
     <Layout>
@@ -122,9 +147,8 @@ const RankingPage = () => {
           desc="자신이 설정한 카테고리별 예산 한도 내에서 누가 더 소비를 잘 참아냈는지 겨뤄보세요"
         />
 
-        {/* 카테고리 네비게이션 탭 */}
         <TabContainer>
-          {categories.map((category) => (
+          {CATEGORIES.map((category) => (
             <TabButton
               key={category}
               isActive={activeCategory === category}
@@ -133,9 +157,12 @@ const RankingPage = () => {
               {category}
             </TabButton>
           ))}
+
+          <BudgetSettingButton onClick={() => setIsModalOpen(true)}>
+            ⚙️ 예산 설정
+          </BudgetSettingButton>
         </TabContainer>
 
-        {/* 랭킹 리스트 섹션 */}
         <RankingSection>
           <ListHeader>
             <HeaderCell width="10%">순위</HeaderCell>
@@ -147,8 +174,7 @@ const RankingPage = () => {
           {currentRankings.length > 0 ? (
             <ListBody>
               {currentRankings.map((item) => {
-                const isOverBudget = item.usageRate > 100; // 예산 초과 여부
-
+                const isOverBudget = item.usageRate > 100;
                 return (
                   <Row key={item.rank} isCurrentUser={item.isCurrentUser}>
                     <RankCell width="10%" rank={item.rank}>
@@ -173,15 +199,13 @@ const RankingPage = () => {
                         / {item.budget.toLocaleString()}원
                       </BudgetText>
                     </Cell>
-
-                    {/* 예산 소진율 게이지 영역 */}
                     <RatioCell width="35%">
                       <RatioText isOverBudget={isOverBudget}>
                         {item.usageRate}% {isOverBudget && "⚠️"}
                       </RatioText>
                       <ProgressBarWrapper>
                         <ProgressBar
-                          percent={Math.min(item.usageRate, 100)} // 100% 넘어가도 바 그래프는 100%로 고정
+                          percent={Math.min(item.usageRate, 100)}
                           isCurrentUser={item.isCurrentUser}
                           isOverBudget={isOverBudget}
                         />
@@ -196,11 +220,19 @@ const RankingPage = () => {
           )}
         </RankingSection>
       </Container>
+
+      {isModalOpen && (
+        <BudgetSettingModal
+          initialBudgets={budgets}
+          onSave={setBudgets}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </Layout>
   );
 };
 
-// --- Styled Components ---
+// --- Styled Components (기존과 동일) ---
 
 const Container = styled.div`
   padding: 40px 32px;
@@ -214,7 +246,6 @@ const TabContainer = styled.div`
   overflow-x: auto;
   padding-bottom: 8px;
   border-bottom: 1px solid #e5e7eb;
-
   &::-webkit-scrollbar {
     display: none;
   }
@@ -231,7 +262,6 @@ const TabButton = styled.button<{ isActive: boolean }>`
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease-in-out;
-
   &:hover {
     background: ${({ isActive }) => (isActive ? "#eff6ff" : "#f3f4f6")};
   }
@@ -273,11 +303,9 @@ const Row = styled.div<{ isCurrentUser?: boolean }>`
   background-color: ${({ isCurrentUser }) =>
     isCurrentUser ? "#f0fdf4" : "transparent"};
   transition: background-color 0.15s ease;
-
   &:last-child {
     border-bottom: none;
   }
-
   &:hover {
     background-color: ${({ isCurrentUser }) =>
       isCurrentUser ? "#f0fdf4" : "#f9fafb"};
@@ -346,6 +374,23 @@ const EmptyState = styled.div`
   text-align: center;
   color: #9ca3af;
   font-size: 15px;
+`;
+
+const BudgetSettingButton = styled.button`
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 8px 18px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  font-weight: 500;
+  &:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+  }
 `;
 
 export default RankingPage;

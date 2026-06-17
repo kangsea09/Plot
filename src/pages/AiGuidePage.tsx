@@ -303,7 +303,7 @@ const AiGuidePage = () => {
               <strong>소비 조정:</strong> 식사와 쇼핑/여가 항목에서 주
               25,000원만 줄이면 여행 준비금의 약 38%를 확보할 수 있습니다.
             </AiItem>
-            <ReflectButton>가이드 반영</ReflectButton>
+            <ReflectButton>다양한 가이드 보기</ReflectButton>
           </AiCard>
         </ThreeCol>
       </Container>
