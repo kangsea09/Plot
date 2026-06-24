@@ -150,23 +150,38 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
   },
 ];
 
+export const EXPENSE_CATEGORIES: Exclude<
+  Category,
+  "전체" | "수입" | "부수입" | "월급" | "용돈"
+>[] = ["뷰티/미용", "문화", "쇼핑/여가", "교통/차량", "식비", "기타"];
+
+export const INCOME_CATEGORIES: Category[] = ["수입", "부수입", "월급", "용돈"];
+
 export const CATEGORIES: Category[] = [
   "전체",
+  "수입",
+  "부수입",
+  "월급",
+  "용돈",
   "뷰티/미용",
   "문화",
   "쇼핑/여가",
-  "수입",
   "교통/차량",
   "식비",
   "기타",
 ];
 
+const INCOME_COLOR = { bg: "#E8F5E9", text: "#2E7D32" };
+
 export const CATEGORY_COLORS: Record<Category, { bg: string; text: string }> = {
   전체: { bg: "#F9E8E8", text: "#C44B4B" },
+  수입: INCOME_COLOR,
+  부수입: INCOME_COLOR,
+  월급: INCOME_COLOR,
+  용돈: INCOME_COLOR,
   "뷰티/미용": { bg: "#E8F0F9", text: "#3A6CA8" },
   문화: { bg: "#E8F9F2", text: "#2E8B5A" },
   "쇼핑/여가": { bg: "#FFF3E0", text: "#BF7A1A" },
-  수입: { bg: "#E8F5E9", text: "#2E7D32" },
   "교통/차량": { bg: "#F3E5F5", text: "#7B1FA2" },
   식비: { bg: "#FBE9E7", text: "#BF360C" },
   기타: { bg: "#F5F5F5", text: "#616161" },

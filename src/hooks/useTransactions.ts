@@ -22,6 +22,19 @@ const useTransactions = () => {
     setForm((prev) => ({ ...prev, ...field }));
   };
 
+  const handleTabChange = (nextTab: TransactionType) => {
+    setTab(nextTab);
+    setForm((prev) => ({
+      ...prev,
+      category:
+        nextTab === "수입"
+          ? "수입"
+          : prev.category === "수입"
+            ? "식비"
+            : prev.category,
+    }));
+  };
+
   const resetForm = () => {
     setForm({
       title: "",
@@ -55,6 +68,8 @@ const useTransactions = () => {
   };
 
   const handleDelete = (id: number) => {
+    const ok = window.confirm("삭제하시겠습니까?");
+    if (!ok) return;
     setTransactions((prev) => prev.filter((t) => t.id !== id));
   };
 
@@ -66,7 +81,7 @@ const useTransactions = () => {
 
   return {
     tab,
-    setTab,
+    setTab: handleTabChange,
     form,
     setFormField,
     filtered: transactions,

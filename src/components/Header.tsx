@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
 import Plot_colors from "../styles/color";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <UpdateText>강세아님, 오늘의 예산 PLOT이 업데이트되었습니다.</UpdateText>
-      <button>AI 가이드</button>
+      <button onClick={() => navigate("/ai-guide")}>AI 가이드</button>
     </Container>
   );
 };

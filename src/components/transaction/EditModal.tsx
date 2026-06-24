@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import type { Transaction, Category } from "../../types/transaction";
-import { CATEGORIES } from "../../data/transactions";
+import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "../../data/transactions";
 
 interface Props {
   transaction: Transaction;
@@ -22,7 +22,7 @@ const EditModal = ({ transaction, onClose, onSave }: Props) => {
   };
 
   const handleAmountChange = (value: string) => {
-    const num = Number(value);
+    const num = Number(value.replace(/[^0-9]/g, ""));
     set({ amount: form.type === "지출" ? -num : num });
   };
 
@@ -44,7 +44,10 @@ const EditModal = ({ transaction, onClose, onSave }: Props) => {
             value={form.category}
             onChange={(e) => set({ category: e.target.value as Category })}
           >
-            {CATEGORIES.map((c) => (
+            {(form.type === "수입"
+              ? INCOME_CATEGORIES
+              : EXPENSE_CATEGORIES
+            ).map((c) => (
               <option key={c} value={c}>
                 {c}
               </option>
@@ -52,8 +55,13 @@ const EditModal = ({ transaction, onClose, onSave }: Props) => {
           </Select>
           <Input
             type="number"
+            min="0"
+            inputMode="numeric"
             value={Math.abs(form.amount)}
-            onChange={(e) => handleAmountChange(e.target.value)}
+            onChange={(e) => {
+              const sanitized = e.target.value.replace(/[^0-9]/g, "");
+              handleAmountChange(sanitized);
+            }}
             placeholder="금액"
           />
           <Input
@@ -94,6 +102,7 @@ const Overlay = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Box = styled.div`
   background: #fff;
   border-radius: 20px;
@@ -101,16 +110,19 @@ const Box = styled.div`
   min-width: 340px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
 `;
+
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 `;
+
 const Title = styled.span`
   font-size: 18px;
   font-weight: 700;
 `;
+
 const CloseBtn = styled.button`
   background: none;
   border: none;
@@ -118,22 +130,27 @@ const CloseBtn = styled.button`
   cursor: pointer;
   color: #999;
 `;
+
 const Col = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
+
 const Input = styled.input`
   ${field}
 `;
+
 const Select = styled.select`
   ${field}
 `;
+
 const Textarea = styled.textarea`
   ${field}
   height: 80px;
   resize: none;
 `;
+
 const SaveBtn = styled.button`
   background: #1a1a1a;
   color: #fff;
