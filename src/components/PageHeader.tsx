@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 
 interface PageHeaderProps {
+  label?: string;
   title: string;
   desc?: string;
-  label?: string;
 }
 
 const PageHeader = ({ label, title, desc }: PageHeaderProps) => {
