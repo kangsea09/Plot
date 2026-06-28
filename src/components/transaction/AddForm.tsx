@@ -48,6 +48,7 @@ const AddForm = ({ tab, form, onTabChange, onFormChange, onAdd }: Props) => (
         placeholder="금액"
       />
       <Select
+        aria-label="카테고리"
         value={form.category}
         onChange={(e) => onFormChange({ category: e.target.value as Category })}
       >
