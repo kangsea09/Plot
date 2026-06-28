@@ -58,27 +58,23 @@ const AddForm = ({ tab, form, onTabChange, onFormChange, onAdd }: Props) => (
         ))}
       </Select>
       <Input
+        aria-label="날짜"
         type="date"
         value={form.date}
         onChange={(e) => onFormChange({ date: e.target.value })}
       />
       <Textarea
+        aria-label="메모"
         value={form.memo}
         onChange={(e) => onFormChange({ memo: e.target.value })}
         placeholder="메모"
       />
-      <AddBtn onClick={onAdd}>내역 추가</AddBtn>
+      <AddBtn type="button" onClick={onAdd}>
+        내역 추가
+      </AddBtn>
     </Col>
   </Panel>
 );
-
-const Panel = styled.div`
-  background: #fff;
-  border-radius: 24px;
-  padding: 20px;
-  border: 1px solid #e8e6e0;
-  flex: 1;
-`;
 
 const Title = styled.h2`
   font-size: 17px;
