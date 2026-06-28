@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <Body>
     <Content>
-      <Sidebar />
+      <Sidebar /> 
       <Main>
         <Header />
         {children}
